@@ -1,0 +1,14 @@
+{
+  "name": "onp_coding_test",
+  "version": "1.0.0",
+  "description": "visualising data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ewan Johnstone",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
