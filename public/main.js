@@ -1,11 +1,17 @@
-// want an array for each chart which counts what we want
 'use strict'
-var myData = [0,0];
+
+// First process our data. label:value pairs for each collumn
+var myData = [{"label":"Dead", "value":0},{"label":"Alive", "value":0}];
 
 // counting no of survivors
 data.forEach((obj, index)=> {
-  myData[obj.Survived] ++;
-})
+  if (obj.Survived == 0) {
+    myData[0]["value"] ++;
+  }
+  else myData[1]["value"] ++;
+});
+console.log(myData);
+// Setting up the graph
 const margin = {
   top: 30,
   right: 30,
@@ -25,7 +31,7 @@ d3.select('#chart').append('svg')
   .attr('width', width + margin.right + margin.left)
   .attr('height', height + margin.top + margin.bottom)
 
-// creates group which holds the axis and bars
+// creates group which holds the bars
 var myChart = d3.select('svg').append('g');
 
 myChart.attr('transform', 'translate( '+ margin.left +', '+ margin.top +')')
@@ -49,8 +55,9 @@ function update(myData) {
 //     .style('border', '1px #333 solid')
 //     .style('border-radius', '5px')
 //     .style('opacity', '0')
-const sum = (a,b)=> a+b;
-var top = myData.reduce(sum);
+
+var top = myData[0]["value"] + myData[1]["value"];
+
 
   console.log(top);
 var yScale = d3.scaleLinear()
@@ -58,7 +65,7 @@ var yScale = d3.scaleLinear()
     .range([0, height]);
 
 var xScale = d3.scaleBand()
-    .domain(d3.range(0, myData.length))
+    .domain(d3.range(0, myData.length),.03)
     .range([0, width]);
 
 var colors = d3.scaleLinear()
@@ -69,18 +76,30 @@ var bars = d3.select('svg g').selectAll('rect')
     .data(myData)
     //Enter new data
     bars.enter().append('rect')
-      .style('fill', (d, i)=> {
+      .style('fill', function(d, i){
         return colors(i);
       })
       .attr('width', xScale.bandwidth())
       .attr('height', function(d){
-        return yScale(d);
+        return yScale(d.value);
       })
-      .attr('x', (d,i)=>{
+      .attr('x', function(d,i){
         return xScale(i);
       })
       .attr('y', function(d){
-        return height - yScale(d);
+        return height - yScale(d.value);
+      });
+      // add labels
+      bars.enter().append("text")
+      .attr('x', function(d,i){
+        return xScale(i) + xScale.bandwidth()/2;
+      })
+      .attr('y', function(d){
+        return height;
+      })
+      .attr("dy", ".75em")
+      .text(function(d){
+        return d.label;
       })
 
       // Update existing bars
@@ -102,10 +121,6 @@ var bars = d3.select('svg g').selectAll('rect')
           .domain([0, top])
           .range([height, 0]);
 
-      var hScale = d3.scaleBand()
-          .domain(d3.range(0, myData.length))
-          .range([0, width]);
-
       // V axis
       var vAxis = d3.axisLeft(vScale)
             .ticks(5)
@@ -121,29 +136,13 @@ var bars = d3.select('svg g').selectAll('rect')
       vGuide.selectAll('line')
           .style('stroke', '#000')
 
-          // H axis
-          var hAxis = d3.axisBottom(hScale)
-                .tickValues(hScale.domain().filter(function(d, i){
-                  return !(i % (myData.length/5));
-                }))
-          // H guide
-          var hGuide = d3.select('svg')
-                  .select('#hAxis')
-          hAxis(hGuide)
-          hGuide.attr('transform','translate( '+ margin.left +', '+ (height + margin.top) +')')
-          hGuide.selectAll('path')
-                    .style('fill', 'none')
-                    .style('stroke', '#000')
-          hGuide.selectAll('line')
-              .style('stroke', '#000')
-
       // animation
       bars.transition()
         .attr('height', function(d){
-          return yScale(d);
+          return yScale(d.value);
         })
         .attr('y', function(d){
-          return height - yScale(d)
+          return height - yScale(d.value)
         })
         .duration(animateDuration)
         .delay(function(d,i){
@@ -156,7 +155,7 @@ var bars = d3.select('svg g').selectAll('rect')
 d3.select('body').append("button")
           .text("+")
           .on("click", function() {
-            myData[0] += 100;
+            myData[0]["value"] += 100;
             console.log(myData);
             update(myData);
           })
