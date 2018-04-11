@@ -41,6 +41,15 @@ myChart.attr('transform', 'translate( '+ margin.left +', '+ margin.top +')')
 d3.select('svg')
     .append('g')
     .attr('id', 'vAxis')
+// creates label
+d3.select('svg')
+    .append('text')
+    .attr('transform','rotate(-90)')
+    .attr('y', 45 - margin.left)
+    .attr('x', 10 - (height/2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Percentage");
 
 d3.select('svg')
   .append('g')
@@ -102,29 +111,33 @@ var bars = d3.select('svg g').selectAll('rect')
         return d.label;
       })
 
+      // add value labels
+      var valLabels = bars.enter().append("text")
+      .attr("class", "dLabel")
+      .attr('x', function(d,i){
+        return xScale(i) + xScale.bandwidth()/2;
+      })
+      .attr('y', function(d){
+        return height - yScale(d.value) - 30;
+      })
+      .attr("dy", ".75em")
+      .text(function(d){
+        return d.value;
+      })
+
       // Update existing bars
-      // bars.style('fill', (d, i)=> {
-      //   return colors(i);
-      // })
-      // .attr('width', xScale.bandwidth())
-      // .attr('height', 0)
-      // .attr('x', (d,i)=>{
-      //   return xScale(i);
-      // })
-      // .attr('y', height)
 
       // Remove empty bars
       bars.exit().remove();
 
       // create the labels
       var vScale = d3.scaleLinear()
-          .domain([0, top])
+          .domain([0, 1])
           .range([height, 0]);
 
       // V axis
       var vAxis = d3.axisLeft(vScale)
-            .ticks(5)
-            .tickPadding(5)
+            .tickFormat(d3.format(".0%"))
       // update V guide
       var vGuide = d3.select('svg')
               .select('#vAxis')
@@ -149,6 +162,23 @@ var bars = d3.select('svg g').selectAll('rect')
           return i*animateDelay
         })
         .ease(d3.easeElastic)
+
+      d3.selectAll('.dLabel').transition()
+      .attr('x', function(d,i){
+        return xScale(i) + xScale.bandwidth()/2;
+      })
+      .attr('y', function(d){
+        return height - yScale(d.value) - 30;
+      })
+      .text(function(d){
+        return d.value;
+      })
+      .duration(animateDuration)
+      .delay(function(d,i){
+        return i*animateDelay
+      })
+      .ease(d3.easeElastic)
+
 };
 
 
