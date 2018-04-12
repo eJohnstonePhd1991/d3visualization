@@ -1,31 +1,4 @@
 'use strict'
-
-// First process our data. label:value pairs for each collumn
-var deadData = [{"label":"Dead", "value":0},{"label":"Alive", "value":0}];
-var classData = [{"label":"Third", "value":0},{"label":"Second", "value":0},{"label":"First", "value":0}];
-// counting no of survivors
-data.forEach((obj, index)=> {
-  if (obj.Survived == 0) {
-    deadData[0]["value"] ++;
-  }
-  else deadData[1]["value"] ++;
-});
-
-// counting passangers by class
-data.forEach((obj)=> {
-  switch(obj.Pclass) {
-    case 1:
-      classData[2]["value"] ++
-      break
-    case 2:
-        classData[1]["value"] ++
-        break
-    case 3:
-        classData[0]["value"] ++
-  }
-})
-
-console.log(classData);
 // Setting up the graph
 const margin = {
   top: 30,
@@ -89,8 +62,6 @@ var top = myData.reduce(function(acc,current){
   return acc + current.value;
 },0)
 
-
-console.log(myData);
 var yScale = d3.scaleLinear()
     .domain([0, top])
     .range([0, height]);
@@ -237,16 +208,91 @@ var bar = bars.enter().append('g').attr('class','bar')
 
 };
 
-
+// SHould just add these into the html
 d3.select('body').append("button")
           .text("death")
           .on("click", function() {
-            update(deadData);
+          changeSet("dead");
           })
 d3.select('body').append("button")
             .text("class")
             .on("click", function() {
-                update(classData);
+                changeSet("class");
                 })
+// PUT THIS IN A SEPERATE MODULE
+var setName = "dead";
+function changeSet(name) {
+  setName = name;
+  upDateData();
+}
+function upDateData() {
+  var d = filterData(data);
+  var newData = []
 
-update(deadData);
+  switch(setName) {
+    case "dead":
+      newData = countDead(d);
+      break
+    case "class":
+      newData = countClass(d);
+  }
+  update(newData);
+}
+function filterData(rawData) {
+  // check which checkboxes are ticked
+  var filterParams = getParameters()
+  console.log(filterParams);
+  //filter raw data
+  var dataFilter = function(d){
+    var test1 = ((d.Survived == 0) ?filterParams[0]:true);
+    var test2 = ((d.Survived == 1) ?filterParams[1]:true);
+    return (test1 && test2);
+  }
+  var filteredData = rawData.filter(dataFilter);
+  console.log(filteredData);
+  return filteredData;
+}
+
+function getParameters() {
+  var filters = document.querySelectorAll('#filters  input');
+  var filterStatus = [];
+  for (let i = 0; i < filters.length; i++){
+    filterStatus[i] = filters[i].checked
+  }
+  return filterStatus
+}
+
+function countDead(inData) {
+  var deadData = [{"label":"Dead", "value":0},{"label":"Alive", "value":0}];
+  // counting no of survivors
+  inData.forEach((obj, index)=> {
+    if (obj.Survived == 0) {
+      deadData[0]["value"] ++;
+    }
+    else deadData[1]["value"] ++;
+  });
+
+  return deadData;
+}
+
+function countClass(inData) {
+  var classData = [{"label":"Third", "value":0},{"label":"Second", "value":0},{"label":"First", "value":0}];
+
+  // counting passangers by class
+  inData.forEach((obj)=> {
+    switch(obj.Pclass) {
+      case 1:
+        classData[2]["value"] ++
+        break
+      case 2:
+          classData[1]["value"] ++
+          break
+      case 3:
+          classData[0]["value"] ++
+    }
+  })
+
+  return classData
+}
+// initializes the graph
+upDateData();
