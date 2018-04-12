@@ -22,9 +22,14 @@ function upDateData() {
 		break;
 	case 'sex':
 		newData = countSex(d);
+		break;
+	case 'embark':
+		newData = countEmbark(d);
 	}
+
 	update(newData);
 }
+
 function filterData(rawData) {
 	// check which checkboxes are ticked
 	var filterParams = getParameters();
@@ -131,6 +136,26 @@ function countSex(inData) {
 	});
 
 	return sexData;
+}
+
+function countEmbark(inData) {
+	var embarkData = [{'label': 'Cherbourg', 'value':0},
+		{'label':'Queenstown', 'value':0},
+		{'label':'Southampton', 'value':0}];
+
+	inData.forEach((obj)=> {
+		if (obj.Embarked == 'C') {
+			embarkData[0].value ++;
+		}
+		else if (obj.Embarked == 'Q') {
+			embarkData[1].value ++;
+		}
+		else if (obj.Embarked == "S") {
+			embarkData[2].value ++;
+		}
+	});
+
+	return embarkData;
 }
 // initializes the graph
 upDateData();

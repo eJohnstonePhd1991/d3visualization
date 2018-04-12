@@ -228,8 +228,15 @@ d3.select('#datasets').append('button')
 	.on('click', function() {
 		changeSet('age');
 	});
+
 d3.select('#datasets').append('button')
 	.text('sex')
 	.on('click', function() {
 		changeSet('sex');
+	});
+
+d3.select('#datasets').append('button')
+	.text('embark')
+	.on('click', function() {
+		changeSet('embark');
 	});
