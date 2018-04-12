@@ -1,16 +1,31 @@
 'use strict'
 
 // First process our data. label:value pairs for each collumn
-var myData = [{"label":"Dead", "value":0},{"label":"Alive", "value":0}];
-
+var deadData = [{"label":"Dead", "value":0},{"label":"Alive", "value":0}];
+var classData = [{"label":"Third", "value":0},{"label":"Second", "value":0},{"label":"First", "value":0}];
 // counting no of survivors
 data.forEach((obj, index)=> {
   if (obj.Survived == 0) {
-    myData[0]["value"] ++;
+    deadData[0]["value"] ++;
   }
-  else myData[1]["value"] ++;
+  else deadData[1]["value"] ++;
 });
-console.log(myData);
+
+// counting passangers by class
+data.forEach((obj)=> {
+  switch(obj.Pclass) {
+    case 1:
+      classData[2]["value"] ++
+      break
+    case 2:
+        classData[1]["value"] ++
+        break
+    case 3:
+        classData[0]["value"] ++
+  }
+})
+
+console.log(classData);
 // Setting up the graph
 const margin = {
   top: 30,
@@ -36,6 +51,7 @@ var myChart = d3.select('svg').append('g');
 
 myChart.attr('transform', 'translate( '+ margin.left +', '+ margin.top +')')
   .style('background', '#f4f4f4')
+  .attr('class','bars');
 
 // creates axis
 d3.select('svg')
@@ -49,14 +65,18 @@ d3.select('svg')
     .attr('x', 10 - (height/2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Percentage");
+    .text("# of People as percentage of total sample size");
 
 d3.select('svg')
-  .append('g')
-  .attr('id', 'hAxis')
+  .append('text')
+  .attr('id','total')
+  .attr('x', height/2 + margin.left)
+  .attr('y', 0 + margin.top)
+  .style('text-anchor', 'middle')
+  .text('Total sample size: ' + 0);
+
 
 function update(myData) {
-  console.log("update");
 // var tooltip = d3.select('body').append('div')
 //     .style('position', 'absolute')
 //     .style('background', '#f4f4f4')
@@ -65,10 +85,12 @@ function update(myData) {
 //     .style('border-radius', '5px')
 //     .style('opacity', '0')
 
-var top = myData[0]["value"] + myData[1]["value"];
+var top = myData.reduce(function(acc,current){
+  return acc + current.value;
+},0)
 
 
-  console.log(top);
+console.log(myData);
 var yScale = d3.scaleLinear()
     .domain([0, top])
     .range([0, height]);
@@ -81,56 +103,58 @@ var colors = d3.scaleLinear()
   .domain([0, myData.length])
   .range(['#90ee90','#30c230'])
 
-var bars = d3.select('svg g').selectAll('rect')
+var bars = d3.select('.bars').selectAll('g')
     .data(myData)
-    //Enter new data
-    bars.enter().append('rect')
-      .style('fill', function(d, i){
-        return colors(i);
-      })
-      .attr('width', xScale.bandwidth())
-      .attr('height', function(d){
-        return yScale(d.value);
-      })
-      .attr('x', function(d,i){
-        return xScale(i);
-      })
-      .attr('y', function(d){
-        return height - yScale(d.value);
-      });
-      // add labels
-      bars.enter().append("text")
-      .attr('x', function(d,i){
-        return xScale(i) + xScale.bandwidth()/2;
-      })
-      .attr('y', function(d){
-        return height;
-      })
-      .attr("dy", ".75em")
-      .text(function(d){
-        return d.label;
-      })
-
-      // add value labels
-      var valLabels = bars.enter().append("text")
-      .attr("class", "dLabel")
-      .attr('x', function(d,i){
-        return xScale(i) + xScale.bandwidth()/2;
-      })
-      .attr('y', function(d){
-        return height - yScale(d.value) - 30;
-      })
-      .attr("dy", ".75em")
-      .text(function(d){
-        return d.value;
-      })
+    //creates a group to contain each bar
+var bar = bars.enter().append('g').attr('class','bar')
+// fills each g with a rect
+      bar.append('rect')
+        .style('fill', function(d, i){
+          return colors(i);
+        })
+        .attr('width', xScale.bandwidth())
+        .attr('height', function(d){
+          return yScale(d.value);
+        })
+        .attr('x', function(d,i){
+          return xScale(i);
+        })
+        .attr('y', function(d){
+          return height - yScale(d.value);
+        })
+        // creates a label for each bar
+        bar.append("text")
+        .attr("class", "nameLabel")
+        .attr('x', function(d,i){
+          return xScale(i) + xScale.bandwidth()/2;
+        })
+        .attr('y', function(d){
+          return height;
+        })
+        .attr("dy", ".75em")
+        .text(function(d){
+          return d.label;
+        })
+        // creates a label showing the value
+      bar.append("text")
+        .attr("class", "dLabel")
+        .attr('x', function(d,i){
+          return xScale(i) + xScale.bandwidth()/2;
+        })
+        .attr('y', function(d){
+          return height - yScale(d.value) - 30;
+        })
+        .attr("dy", ".75em")
+        .text(function(d){
+          return d.value;
+        })
 
       // Update existing bars
 
       // Remove empty bars
       bars.exit().remove();
 
-      // create the labels
+      // create the axis labels
       var vScale = d3.scaleLinear()
           .domain([0, 1])
           .range([height, 0]);
@@ -149,10 +173,15 @@ var bars = d3.select('svg g').selectAll('rect')
       vGuide.selectAll('line')
           .style('stroke', '#000')
 
-      // animation
-      bars.transition()
+      // animations to update values
+      d3.selectAll('rect').data(myData)
+      .transition()
+        .attr('width', xScale.bandwidth())
         .attr('height', function(d){
           return yScale(d.value);
+        })
+        .attr('x', function(d,i){
+          return xScale(i);
         })
         .attr('y', function(d){
           return height - yScale(d.value)
@@ -163,7 +192,8 @@ var bars = d3.select('svg g').selectAll('rect')
         })
         .ease(d3.easeElastic)
 
-      d3.selectAll('.dLabel').transition()
+      d3.selectAll('.dLabel').data(myData)
+      .transition()
       .attr('x', function(d,i){
         return xScale(i) + xScale.bandwidth()/2;
       })
@@ -179,15 +209,44 @@ var bars = d3.select('svg g').selectAll('rect')
       })
       .ease(d3.easeElastic)
 
+      d3.selectAll('.nameLabel').data(myData)
+      .transition()
+      .attr('x', function(d,i){
+        return xScale(i) + xScale.bandwidth()/2;
+      })
+      .attr('y', function(d){
+        return height;
+      })
+      .text(function(d){
+        return d.label;
+      })
+      .duration(animateDuration)
+      .delay(function(d,i){
+        return i*animateDelay
+      })
+      .ease(d3.easeElastic)
+
+      d3.select('svg #total')
+        .transition()
+        .text('Total sample size: ' + top)
+        .duration(animateDuration)
+        .delay(function(d,i){
+          return i*animateDelay
+        })
+        .ease(d3.easeElastic)
+
 };
 
 
 d3.select('body').append("button")
-          .text("+")
+          .text("death")
           .on("click", function() {
-            myData[0]["value"] += 100;
-            console.log(myData);
-            update(myData);
+            update(deadData);
           })
+d3.select('body').append("button")
+            .text("class")
+            .on("click", function() {
+                update(classData);
+                })
 
-update(myData);
+update(deadData);
