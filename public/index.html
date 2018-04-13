@@ -4,6 +4,8 @@
       <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
       <title> Titanic data visualisation</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
       <script src="https://d3js.org/d3.v5.min.js"></script>
       <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
       <script src="https://d3js.org/d3-axis.v1.min.js"></script>
@@ -17,24 +19,71 @@
           <h1> Titanic passenger demographics </h1>
         </header>
 
-        <div id="datasets" class="row">
+        <div id="datasets" class="row btn-group">
 
         </div>
 
         <div id="chart" class="row">
         </div>
-        <h4>Filter by attributes</h2>
+        <h4>Filter by attributes</h4>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
+          Show filters
+        </button>
         <div id="filters" class="row">
+            <div class="collapse" id="filterForm">
+              <form class="card card-body">
+                <div id="survive" class="form-group row">
+                  <div class="form-check form-check-inline">
+                  <input id= "dead" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "dead">Died</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "alive" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "alive">Survived</label>
+                </div>
+              </div>
 
-          <div id="survive" class="form-group">
-            <div class="form-check-inline">
-              <input id= "dead" type="checkbox" onclick="upDateData()" checked>
-              <label for= "dead">Died</label>
-            </div>
-            <div class="form-check-inline">
-              <input id= "alive" type="checkbox" onclick="upDateData()" checked>
-              <label for= "alive">Survived</label>
-            </div>
+              <div id="ticket" class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input id= "third" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "third">Third class</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "second" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "second">Second Class</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "first" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "first">First Class</label>
+                </div>
+              </div>
+
+              <div id="ticket" class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input id= "male" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "male">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "female" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "female">Female</label>
+                </div>
+              </div>
+
+              <div id="ticket" class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input id= "Cherbourg" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "Cherbourg">Cherbourg</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "Queenstown" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "Queenstown">Queenstown</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input id= "Southampton" type="checkbox" onclick="upDateData()" checked>
+                  <label for= "Southampton">Southampton</label>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ function changeSet(name) {
 function upDateData() {
 	var d = filterData(data);
 	var newData = [];
-
+	
 	switch(setName) {
 	case 'dead':
 		newData = countDead(d);
@@ -34,10 +34,26 @@ function filterData(rawData) {
 	// check which checkboxes are ticked
 	var filterParams = getParameters();
 	//filter raw data
+	console.log(filterParams);
 	var dataFilter = function(d){
-		var test1 = ((d.Survived == 0) ?filterParams[0]:true);
-		var test2 = ((d.Survived == 1) ?filterParams[1]:true);
-		return (test1 && test2);
+		var test = [
+			((d.Survived == 0) ?filterParams[0].status:true),
+			((d.Survived == 1) ?filterParams[1].status:true),
+			((d.Pclass == 3) ?filterParams[2].status:true),
+			((d.Pclass == 2) ?filterParams[3].status:true),
+			((d.Pclass == 1) ?filterParams[4].status:true),
+			((d.Sex === "male") ?filterParams[5].status:true),
+			((d.Sex === "female") ?filterParams[6].status:true),
+			((d.Embarked === "C") ?filterParams[7].status:true),
+			((d.Embarked === "Q") ?filterParams[8].status:true),
+			((d.Embarked === "S") ?filterParams[9].status:true)]
+
+		for (let i = 0; i < test.length ; i++){
+			if (!test[i]) {
+				return false
+			}
+		}
+		return true
 	};
 	var filteredData = rawData.filter(dataFilter);
 	return filteredData;
@@ -47,7 +63,7 @@ function getParameters() {
 	var filters = document.querySelectorAll('#filters  input');
 	var filterStatus = [];
 	for (let i = 0; i < filters.length; i++){
-		filterStatus[i] = filters[i].checked;
+		filterStatus[i] = {'label':filters[i].id,'status':filters[i].checked};
 	}
 	return filterStatus;
 }
@@ -67,7 +83,7 @@ function countDead(inData) {
 }
 
 function countClass(inData) {
-	var classData = [{'label':'Third', 'value':0},{'label':'Second', 'value':0},{'label':'First', 'value':0}];
+	var classData = [{'label':'Third class', 'value':0},{'label':'Second class', 'value':0},{'label':'First class', 'value':0}];
 
 	// counting passangers by class
 	inData.forEach((obj)=> {

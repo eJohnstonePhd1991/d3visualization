@@ -164,7 +164,7 @@ function update(myData) {
 		.delay(function(d,i){
 			return i*animateDelay;
 		})
-		.ease(d3.easeElastic);
+		.ease(d3.easeExp);
 
 	d3.selectAll('.dLabel').data(myData)
 		.transition()
@@ -181,7 +181,7 @@ function update(myData) {
 		.delay(function(d,i){
 			return i*animateDelay;
 		})
-		.ease(d3.easeElastic);
+		.ease(d3.easeExp);
 
 	d3.selectAll('.nameLabel').data(myData)
 		.transition()
@@ -198,7 +198,7 @@ function update(myData) {
 		.delay(function(d,i){
 			return i*animateDelay;
 		})
-		.ease(d3.easeElastic);
+		.ease(d3.easeExp);
 
 	d3.select('svg #total')
 		.transition()
@@ -207,35 +207,40 @@ function update(myData) {
 		.delay(function(d,i){
 			return i*animateDelay;
 		})
-		.ease(d3.easeElastic);
+
 
 }
 
-// SHould just add these into the html
+// SHould just add these into the html?
 d3.select('#datasets').append('button')
+	.attr('class','btn btn-outline-secondary')
 	.text('death')
 	.on('click', function() {
 		changeSet('dead');
 	});
 d3.select('#datasets').append('button')
+	.attr('class','btn btn-outline-secondary')
 	.text('class')
 	.on('click', function() {
 		changeSet('class');
 	});
 
 d3.select('#datasets').append('button')
+	.attr('class','btn btn-outline-secondary')
 	.text('age')
 	.on('click', function() {
 		changeSet('age');
 	});
 
 d3.select('#datasets').append('button')
+	.attr('class','btn btn-outline-secondary')
 	.text('sex')
 	.on('click', function() {
 		changeSet('sex');
 	});
 
 d3.select('#datasets').append('button')
+	.attr('class','btn btn-outline-secondary')
 	.text('embark')
 	.on('click', function() {
 		changeSet('embark');
