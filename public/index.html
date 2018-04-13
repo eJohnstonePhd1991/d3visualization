@@ -15,76 +15,100 @@
     <body>
       <div class="container">
 
-        <header>
-          <h1> Titanic passenger demographics </h1>
+        <header class="row">
+          <h1 class="col-sm"> Titanic passenger demographics </h1>
         </header>
 
-        <div id="datasets" class="row btn-group">
-
+        <div class="row">
+          <div id="datasets" class="col-sm btn-group">
+          </div>
         </div>
 
         <div id="chart" class="row">
         </div>
         <h4>Filter by attributes</h4>
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
-          Show filters
+          Toggle filter display
         </button>
         <div id="filters" class="row">
-            <div class="collapse" id="filterForm">
+            <div class="collapse col-sm" id="filterForm">
               <form class="card card-body">
-                <div id="survive" class="form-group row">
+
+                <div id="survive">
                   <div class="form-check form-check-inline">
-                  <input id= "dead" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "dead" type="checkbox"checked>
                   <label for= "dead">Died</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "alive" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "alive" type="checkbox"checked>
                   <label for= "alive">Survived</label>
                 </div>
               </div>
 
-              <div id="ticket" class="form-group row">
+              <div id="ticket">
                 <div class="form-check form-check-inline">
-                  <input id= "third" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "third" type="checkbox"checked>
                   <label for= "third">Third class</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "second" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "second" type="checkbox"checked>
                   <label for= "second">Second Class</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "first" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "first" type="checkbox"checked>
                   <label for= "first">First Class</label>
                 </div>
               </div>
 
-              <div id="ticket" class="form-group row">
+              <div id="sex">
                 <div class="form-check form-check-inline">
-                  <input id= "male" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "male" type="checkbox"checked>
                   <label for= "male">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "female" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "female" type="checkbox"checked>
                   <label for= "female">Female</label>
                 </div>
               </div>
 
-              <div id="ticket" class="form-group row">
+              <div id="embark">
                 <div class="form-check form-check-inline">
-                  <input id= "Cherbourg" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "Cherbourg" type="checkbox"checked>
                   <label for= "Cherbourg">Cherbourg</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "Queenstown" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "Queenstown" type="checkbox"checked>
                   <label for= "Queenstown">Queenstown</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input id= "Southampton" type="checkbox" onclick="upDateData()" checked>
+                  <input id= "Southampton" type="checkbox"checked>
                   <label for= "Southampton">Southampton</label>
                 </div>
               </div>
+
+              <div id="age" class="row">
+                <div class="col-sm-6">
+                  <label for= "min">Min age</label>
+                  <input id= "min" class="form-control" type="number" min="1" max="99" value="1">
+                  <div id = "error1" style="color:red" hidden>Age must be greater than zero</div>
+                  <div id = "error2" style="color:red" hidden>Age must be less than 100</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for= "max">Max age</label>
+                  <input id= "max" class="form-control" type="number" min="1" max="99" value="99">
+                  <div id = "error3" style="color:red" hidden>Age must be greater than zero</div>
+                  <div id = "error4" style="color:red" hidden>Age must be less than 100</div>
+                </div>
+              </div>
+              <div class="row">
+                <div id = "error5" class="col-sm-12" style="color:red" hidden>Minimum age must be less than maximum</div>
+              </div>
+
+              <button class="btn btn-primary" type="button" onClick="validateAge()">
+                Filter dataset
+              </button>
             </form>
-          </div>
+
         </div>
       </div>
       <script src="graph.js"></script>

@@ -6,10 +6,35 @@ function changeSet(name) {
 	setName = name;
 	upDateData();
 }
+function validateAge() {
+	var min = parseInt(document.querySelector('#min').value);
+	var max = parseInt(document.querySelector('#max').value);
+
+	// Checks if input is valid
+	if (min >=1 && min <= max && max <= 100){
+		console.log('ok!');
+		document.querySelector('#error1').hidden = true;
+		document.querySelector('#error2').hidden = true;
+		document.querySelector('#error3').hidden = true;
+		document.querySelector('#error4').hidden = true;
+		document.querySelector('#error5').hidden = true;
+
+		upDateData();
+	}
+	// Handle error messages
+	else {
+		document.querySelector('#error1').hidden = (min <=0 ?false:true);
+		document.querySelector('#error2').hidden = (min >= 100 ?false:true);
+		document.querySelector('#error3').hidden = (max <=0 ?false:true);
+		document.querySelector('#error4').hidden = (max >= 100 ?false:true);
+		document.querySelector('#error5').hidden = (min > max ?false: true);
+	}
+}
+
 function upDateData() {
 	var d = filterData(data);
 	var newData = [];
-	
+	console.log("updated");
 	switch(setName) {
 	case 'dead':
 		newData = countDead(d);
@@ -46,14 +71,16 @@ function filterData(rawData) {
 			((d.Sex === "female") ?filterParams[6].status:true),
 			((d.Embarked === "C") ?filterParams[7].status:true),
 			((d.Embarked === "Q") ?filterParams[8].status:true),
-			((d.Embarked === "S") ?filterParams[9].status:true)]
+			((d.Embarked === "S") ?filterParams[9].status:true),
+			((d.Age!="") ?(d.Age >= filterParams[10].value):true),
+			((d.Age!="") ?(d.Age <= filterParams[11].value):true)]
 
 		for (let i = 0; i < test.length ; i++){
 			if (!test[i]) {
-				return false
+				return false;
 			}
 		}
-		return true
+		return true;
 	};
 	var filteredData = rawData.filter(dataFilter);
 	return filteredData;
@@ -62,9 +89,11 @@ function filterData(rawData) {
 function getParameters() {
 	var filters = document.querySelectorAll('#filters  input');
 	var filterStatus = [];
-	for (let i = 0; i < filters.length; i++){
+	for (let i = 0; i < filters.length - 2; i++){
 		filterStatus[i] = {'label':filters[i].id,'status':filters[i].checked};
 	}
+	filterStatus[filters.length-2] = {'label':'min', 'value':filters[filters.length-2].value};
+	filterStatus[filters.length-1] = {'label':'max', 'value':filters[filters.length-1].value};
 	return filterStatus;
 }
 
@@ -108,11 +137,13 @@ function countAge(inData) {
 		{'label': '19-30', 'value':0},
 		{'label': '31-50', 'value':0},
 		{'label': '51-70', 'value':0},
-		{'label': '70+', 'value':0}
+		{'label': '70+', 'value':0},
+		{'label': 'unknown', 'value':0}
 	];
 
 	inData.forEach((obj)=> {
 		if (obj.Age === ''){
+			ageData[6].value ++;
 			return;
 		}
 
@@ -157,7 +188,8 @@ function countSex(inData) {
 function countEmbark(inData) {
 	var embarkData = [{'label': 'Cherbourg', 'value':0},
 		{'label':'Queenstown', 'value':0},
-		{'label':'Southampton', 'value':0}];
+		{'label':'Southampton', 'value':0},
+		{'label': 'Unknown', 'value': 0}];
 
 	inData.forEach((obj)=> {
 		if (obj.Embarked == 'C') {
@@ -168,6 +200,9 @@ function countEmbark(inData) {
 		}
 		else if (obj.Embarked == "S") {
 			embarkData[2].value ++;
+		}
+		else {
+			embarkData[3].value ++;
 		}
 	});
 
