@@ -20,6 +20,10 @@
         </header>
 
         <div class="row">
+          <p>View demographics by attribute</p>
+        </div>
+
+        <div class="row">
           <div id="datasets" class="col-sm btn-group">
           </div>
         </div>
@@ -31,7 +35,7 @@
           Toggle filter display
         </button>
         <div id="filters" class="row">
-            <div class="collapse col-sm" id="filterForm">
+            <div class="collapse col-sm-6" id="filterForm">
               <form class="card card-body">
 
                 <div id="survive">
@@ -86,6 +90,10 @@
                 </div>
               </div>
 
+              <div class="form-check form-check-inline">
+                <input id= "unknown" type="checkbox"checked>
+                <label for= "unknown">Unknown age</label>
+              </div>
               <div id="age" class="row">
                 <div class="col-sm-6">
                   <label for= "min">Min age</label>

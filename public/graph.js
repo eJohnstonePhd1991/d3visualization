@@ -39,7 +39,7 @@ d3.select('svg')
 	.attr('x', 10 - (height/2))
 	.attr('dy', '1em')
 	.style('text-anchor', 'middle')
-	.text('# of People as percentage of total sample size');
+	.text('# of People as percentage');
 
 d3.select('svg')
 	.append('text')

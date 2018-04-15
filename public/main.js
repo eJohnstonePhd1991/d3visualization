@@ -34,7 +34,7 @@ function validateAge() {
 function upDateData() {
 	var d = filterData(data);
 	var newData = [];
-	console.log("updated");
+	// console.log(d);
 	switch(setName) {
 	case 'dead':
 		newData = countDead(d);
@@ -58,8 +58,8 @@ function upDateData() {
 function filterData(rawData) {
 	// check which checkboxes are ticked
 	var filterParams = getParameters();
+	// console.log(filterParams);
 	//filter raw data
-	console.log(filterParams);
 	var dataFilter = function(d){
 		var test = [
 			((d.Survived == 0) ?filterParams[0].status:true),
@@ -72,8 +72,9 @@ function filterData(rawData) {
 			((d.Embarked === "C") ?filterParams[7].status:true),
 			((d.Embarked === "Q") ?filterParams[8].status:true),
 			((d.Embarked === "S") ?filterParams[9].status:true),
-			((d.Age!="") ?(d.Age >= filterParams[10].value):true),
-			((d.Age!="") ?(d.Age <= filterParams[11].value):true)]
+			((d.Age==="") ?(filterParams[10].status):true),
+			((d.Age!="") ?(d.Age >= filterParams[11].value):true),
+			((d.Age!="") ?(d.Age <= filterParams[12].value):true)];
 
 		for (let i = 0; i < test.length ; i++){
 			if (!test[i]) {
