@@ -10,113 +10,153 @@
       <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
       <script src="https://d3js.org/d3-axis.v1.min.js"></script>
       <script src="/data/data.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+      <style>
+        html, body {
+          height:100%;
+          margin: 0;
+          font-family: 'Open Sans', sans-serif;
+        }
+        #chart {
+          left: 0px;
+          right: 10px;
+          top: 0px;
+          bottom: 10px;
+          height: 100%;
+          min-height: 300px;
+        }
 
+        .info {
+          background-color: #fcfcfc;
+        }
+
+        .text-label {
+          font-weight: bold;
+          font-size: 20px;
+        }
+
+        .dLabel {
+          font-style: italic;
+        }
+      </style>
     </head>
     <body>
-      <div class="container">
+      <div class="container-fluid h-100">
 
-        <header class="row">
-          <h1 class="col-sm"> Titanic passenger demographics </h1>
-        </header>
+        <div class="row h-100">
+          <div class="col-lg-5 info">
+            <div class="row jumbotron">
+              <div class="col-md">
+                <h1 class="text-center"> Titanic passenger demographics </h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md">
+                <h3 class="text-center">View demographics by attribute</h3>
+              </div>
+            </div>
+            <div class="row mb-5">
+              <div class="col-md-12 d-flex justify-content-center ">
+                <div id="datasets1" class="btn-group"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md">
+                <h4 class="text-center">Filter by attributes</h4>
+              </div>
+            </div>
 
-        <div class="row">
-          <p>View demographics by attribute</p>
-        </div>
+            <div id="filters" class="d-flex justify-content-center">
+                  <form class="card card-body col-md">
+                    <div id="survive">
+                      <div class="form-check form-check-inline">
+                      <input id= "dead" type="checkbox"checked>
+                      <label for= "dead">Died</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "alive" type="checkbox"checked>
+                      <label for= "alive">Survived</label>
+                    </div>
+                  </div>
 
-        <div class="row">
-          <div id="datasets" class="col-sm btn-group">
-          </div>
-        </div>
+                  <div id="ticket">
+                    <div class="form-check form-check-inline">
+                      <input id= "third" type="checkbox"checked>
+                      <label for= "third">Third class</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "second" type="checkbox"checked>
+                      <label for= "second">Second Class</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "first" type="checkbox"checked>
+                      <label for= "first">First Class</label>
+                    </div>
+                  </div>
 
-        <div id="chart" class="row">
-        </div>
-        <h4>Filter by attributes</h4>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
-          Toggle filter display
-        </button>
-        <div id="filters" class="row">
-            <div class="collapse col-sm-6" id="filterForm">
-              <form class="card card-body">
+                  <div id="sex">
+                    <div class="form-check form-check-inline">
+                      <input id= "male" type="checkbox"checked>
+                      <label for= "male">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "female" type="checkbox"checked>
+                      <label for= "female">Female</label>
+                    </div>
+                  </div>
 
-                <div id="survive">
+                  <div id="embark">
+                    <div class="form-check form-check-inline">
+                      <input id= "Cherbourg" type="checkbox"checked>
+                      <label for= "Cherbourg">Cherbourg</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "Queenstown" type="checkbox"checked>
+                      <label for= "Queenstown">Queenstown</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input id= "Southampton" type="checkbox"checked>
+                      <label for= "Southampton">Southampton</label>
+                    </div>
+                  </div>
+
                   <div class="form-check form-check-inline">
-                  <input id= "dead" type="checkbox"checked>
-                  <label for= "dead">Died</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "alive" type="checkbox"checked>
-                  <label for= "alive">Survived</label>
-                </div>
-              </div>
+                    <input id= "unknown" type="checkbox"checked>
+                    <label for= "unknown">Unknown age</label>
+                  </div>
+                  <div id="age" class="row">
+                    <div class="col-sm-6">
+                      <label for= "min">Min age</label>
+                      <input id= "min" class="form-control" type="number" min="1" max="99" value="1">
+                      <div id = "error1" style="color:red" hidden>Age must be greater than zero</div>
+                      <div id = "error2" style="color:red" hidden>Age must be less than 100</div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for= "max">Max age</label>
+                      <input id= "max" class="form-control" type="number" min="1" max="99" value="99">
+                      <div id = "error3" style="color:red" hidden>Age must be greater than zero</div>
+                      <div id = "error4" style="color:red" hidden>Age must be less than 100</div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div id = "error5" class="col-sm-12" style="color:red" hidden>Minimum age must be less than maximum</div>
+                  </div>
 
-              <div id="ticket">
-                <div class="form-check form-check-inline">
-                  <input id= "third" type="checkbox"checked>
-                  <label for= "third">Third class</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "second" type="checkbox"checked>
-                  <label for= "second">Second Class</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "first" type="checkbox"checked>
-                  <label for= "first">First Class</label>
-                </div>
+                  <div class="row">
+                    <div class="col-12 d-flex justify-content-center mt-2">
+                      <button class="btn btn-primary" type="button" onClick="validateAge()">
+                        Filter dataset
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
+          </div>
 
-              <div id="sex">
-                <div class="form-check form-check-inline">
-                  <input id= "male" type="checkbox"checked>
-                  <label for= "male">Male</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "female" type="checkbox"checked>
-                  <label for= "female">Female</label>
-                </div>
-              </div>
-
-              <div id="embark">
-                <div class="form-check form-check-inline">
-                  <input id= "Cherbourg" type="checkbox"checked>
-                  <label for= "Cherbourg">Cherbourg</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "Queenstown" type="checkbox"checked>
-                  <label for= "Queenstown">Queenstown</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input id= "Southampton" type="checkbox"checked>
-                  <label for= "Southampton">Southampton</label>
-                </div>
-              </div>
-
-              <div class="form-check form-check-inline">
-                <input id= "unknown" type="checkbox"checked>
-                <label for= "unknown">Unknown age</label>
-              </div>
-              <div id="age" class="row">
-                <div class="col-sm-6">
-                  <label for= "min">Min age</label>
-                  <input id= "min" class="form-control" type="number" min="1" max="99" value="1">
-                  <div id = "error1" style="color:red" hidden>Age must be greater than zero</div>
-                  <div id = "error2" style="color:red" hidden>Age must be less than 100</div>
-                </div>
-                <div class="col-sm-6">
-                  <label for= "max">Max age</label>
-                  <input id= "max" class="form-control" type="number" min="1" max="99" value="99">
-                  <div id = "error3" style="color:red" hidden>Age must be greater than zero</div>
-                  <div id = "error4" style="color:red" hidden>Age must be less than 100</div>
-                </div>
-              </div>
-              <div class="row">
-                <div id = "error5" class="col-sm-12" style="color:red" hidden>Minimum age must be less than maximum</div>
-              </div>
-
-              <button class="btn btn-primary" type="button" onClick="validateAge()">
-                Filter dataset
-              </button>
-            </form>
-
+          <div class="col-lg-6">
+            <div id="chart">
+            </div>
+          </div>
         </div>
       </div>
       <script src="graph.js"></script>

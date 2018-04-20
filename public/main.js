@@ -211,3 +211,6 @@ function countEmbark(inData) {
 }
 // initializes the graph
 upDateData();
+
+// redraw graph on window resize
+window.addEventListener("resize", upDateData);

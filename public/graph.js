@@ -3,12 +3,11 @@
 // Setting up the graph
 const margin = {
 	top: 30,
-	right: 30,
+	right: 10,
 	bottom: 40,
 	left: 50
 };
-const height = 500 - margin.top - margin.bottom;
-const width = 500 - margin.right - margin.left;
+
 const animateDuration = 1000;
 const animateDelay = 30;
 // var barWidth = 35;
@@ -16,39 +15,22 @@ const animateDelay = 30;
 
 // creates svg
 
-d3.select('#chart').append('svg')
-	.attr('width', width + margin.right + margin.left)
-	.attr('height', height + margin.top + margin.bottom);
-
-// creates group which holds the bars
-var myChart = d3.select('svg').append('g');
-
-myChart.attr('transform', 'translate( '+ margin.left +', '+ margin.top +')')
-	.style('background', '#f4f4f4')
-	.attr('class','bars');
+var chartDiv = document.getElementById('chart');
+var svg = d3.select(chartDiv).append('svg')
 
 // creates axis
 d3.select('svg')
 	.append('g')
 	.attr('id', 'vAxis');
-// creates label
-d3.select('svg')
-	.append('text')
-	.attr('transform','rotate(-90)')
-	.attr('y', 45 - margin.left)
-	.attr('x', 10 - (height/2))
-	.attr('dy', '1em')
-	.style('text-anchor', 'middle')
-	.text('# of People as percentage');
 
-d3.select('svg')
+	// creates label
+var vAxisLabel = d3.select('svg').append('text')
+// creates group which holds the bars
+var myChart = d3.select('svg').append('g');
+
+var total = d3.select('svg')
 	.append('text')
 	.attr('id','total')
-	.attr('x', height/2 + margin.left)
-	.attr('y', 0 + margin.top)
-	.style('text-anchor', 'middle')
-	.text('Total sample size: ' + 0);
-
 
 function update(myData) {
 // var tooltip = d3.select('body').append('div')
@@ -58,6 +40,33 @@ function update(myData) {
 //     .style('border', '1px #333 solid')
 //     .style('border-radius', '5px')
 //     .style('opacity', '0')
+// Draws/Redraws graph
+var width = chartDiv.clientWidth - margin.right - margin.left;
+var height = chartDiv.clientHeight - margin.top - margin.bottom;
+
+svg
+		.attr('width', width + margin.right + margin.left)
+		.attr('height', height + margin.top + margin.bottom)
+
+	myChart.attr('transform', 'translate( '+ (margin.left + 1) +', '+ margin.top +')')
+		.style('background', '#f4f4f4')
+		.attr('class','bars');
+
+
+
+	vAxisLabel.attr('transform','rotate(-90)')
+		.attr('y', 45 - margin.left)
+		.attr('x', 1 - (height/2))
+		.attr('dy', '1em')
+		.style('text-anchor', 'middle')
+		.text('# of People as percentage');
+
+
+	total.attr('x', width/2 + margin.left)
+		.attr('y', 0 + margin.top)
+		.style('text-anchor', 'middle')
+		.attr('class','text-label')
+		.text('Total sample size: ' + 0);
 
 	var top = myData.reduce(function(acc,current){
 		return acc + current.value;
@@ -212,36 +221,36 @@ function update(myData) {
 }
 
 // SHould just add these into the html?
-d3.select('#datasets').append('button')
+d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
-	.text('death')
+	.text('Death')
 	.on('click', function() {
 		changeSet('dead');
 	});
-d3.select('#datasets').append('button')
+d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
-	.text('class')
+	.text('Class')
 	.on('click', function() {
 		changeSet('class');
 	});
 
-d3.select('#datasets').append('button')
+d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
-	.text('age')
+	.text('Age')
 	.on('click', function() {
 		changeSet('age');
 	});
 
-d3.select('#datasets').append('button')
+d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
-	.text('sex')
+	.text('Gender')
 	.on('click', function() {
 		changeSet('sex');
 	});
 
-d3.select('#datasets').append('button')
+d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
-	.text('embark')
+	.text('Embark')
 	.on('click', function() {
 		changeSet('embark');
 	});
