@@ -2,7 +2,7 @@
 
 // Setting up the graph
 const margin = {
-	top: 30,
+	top: 50,
 	right: 10,
 	bottom: 40,
 	left: 50
@@ -63,7 +63,7 @@ svg
 
 
 	total.attr('x', width/2 + margin.left)
-		.attr('y', 0 + margin.top)
+		.attr('y', -10 + margin.top)
 		.style('text-anchor', 'middle')
 		.attr('class','text-label')
 		.text('Total sample size: ' + 0);
@@ -124,7 +124,7 @@ svg
 			return xScale(i) + xScale.bandwidth()/2;
 		})
 		.attr('y', function(d){
-			return height - yScale(d.value) - 30;
+			return height - yScale(d.value) - 20;
 		})
 		.attr('dy', '.75em')
 		.style('text-anchor', 'middle')
@@ -181,7 +181,7 @@ svg
 			return xScale(i) + xScale.bandwidth()/2;
 		})
 		.attr('y', function(d){
-			return height - yScale(d.value) - 30;
+			return height - yScale(d.value) - 20;
 		})
 		.text(function(d){
 			return d.value;
@@ -222,13 +222,15 @@ svg
 
 // SHould just add these into the html?
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary')
+	.attr('class','btn btn-outline-secondary active')
+	.attr('data-toggle', 'button')
 	.text('Death')
 	.on('click', function() {
 		changeSet('dead');
 	});
 d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
+	.attr('data-toggle', 'button')
 	.text('Class')
 	.on('click', function() {
 		changeSet('class');
@@ -236,6 +238,7 @@ d3.select('#datasets1').append('button')
 
 d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
+	.attr('data-toggle', 'button')
 	.text('Age')
 	.on('click', function() {
 		changeSet('age');
@@ -243,6 +246,7 @@ d3.select('#datasets1').append('button')
 
 d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
+	.attr('data-toggle', 'button')
 	.text('Gender')
 	.on('click', function() {
 		changeSet('sex');
@@ -250,6 +254,7 @@ d3.select('#datasets1').append('button')
 
 d3.select('#datasets1').append('button')
 	.attr('class','btn btn-outline-secondary')
+	.attr('data-toggle', 'button')
 	.text('Embark')
 	.on('click', function() {
 		changeSet('embark');

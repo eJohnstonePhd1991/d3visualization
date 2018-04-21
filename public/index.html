@@ -5,6 +5,7 @@
       <title> Titanic data visualisation</title>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
       <script src="https://d3js.org/d3.v5.min.js"></script>
       <script src="https://d3js.org/d3-selection-multi.v0.4.min.js"></script>
@@ -23,7 +24,10 @@
           top: 0px;
           bottom: 10px;
           height: 100%;
+          width: 100%;
+          padding-bottom: 75%;
           min-height: 300px;
+          max-height: 95vh;
         }
 
         .info {
@@ -32,11 +36,15 @@
 
         .text-label {
           font-weight: bold;
-          font-size: 20px;
         }
 
         .dLabel {
           font-style: italic;
+        }
+
+        .btn-outline-secondary.focus btn-outline-secondary:focus {
+          background-color:inherit;
+          border-color: inherit;
         }
       </style>
     </head>
@@ -55,7 +63,7 @@
                 <h3 class="text-center">View demographics by attribute</h3>
               </div>
             </div>
-            <div class="row mb-5">
+            <div class="row mb-4">
               <div class="col-md-12 d-flex justify-content-center ">
                 <div id="datasets1" class="btn-group"></div>
               </div>
@@ -66,94 +74,116 @@
               </div>
             </div>
 
-            <div id="filters" class="d-flex justify-content-center">
-                  <form class="card card-body col-md">
-                    <div id="survive">
-                      <div class="form-check form-check-inline">
-                      <input id= "dead" type="checkbox"checked>
-                      <label for= "dead">Died</label>
+            <div id="filters">
+              <div class="btn-group d-flex justify-content-center">
+                <div class="dropdown mr-1">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mortality
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
+                      <input id= "died" type="checkbox"checked>
+                      <label for= "died">Died</label>
                     </div>
-                    <div class="form-check form-check-inline">
-                      <input id= "alive" type="checkbox"checked>
-                      <label for= "alive">Survived</label>
+                    <div class="dropdown-item">
+                      <input id= "survived" type="checkbox"checked>
+                      <label for= "survived">Survived</label>
                     </div>
                   </div>
-
-                  <div id="ticket">
-                    <div class="form-check form-check-inline">
+                </div>
+                <div class="dropdown mr-1">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Class
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
                       <input id= "third" type="checkbox"checked>
-                      <label for= "third">Third class</label>
+                      <label for= "third">3rd class</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="dropdown-item">
                       <input id= "second" type="checkbox"checked>
-                      <label for= "second">Second Class</label>
+                      <label for= "second">2nd Class</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="dropdown-item">
                       <input id= "first" type="checkbox"checked>
-                      <label for= "first">First Class</label>
+                      <label for= "first">1st Class</label>
                     </div>
                   </div>
-
-                  <div id="sex">
-                    <div class="form-check form-check-inline">
+                </div>
+                <div class="dropdown mr-1">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Gender
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
                       <input id= "male" type="checkbox"checked>
                       <label for= "male">Male</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="dropdown-item">
                       <input id= "female" type="checkbox"checked>
                       <label for= "female">Female</label>
                     </div>
                   </div>
-
-                  <div id="embark">
-                    <div class="form-check form-check-inline">
+                </div>
+                <div class="dropdown mr-1">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Embark
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
                       <input id= "Cherbourg" type="checkbox"checked>
                       <label for= "Cherbourg">Cherbourg</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="dropdown-item">
                       <input id= "Queenstown" type="checkbox"checked>
                       <label for= "Queenstown">Queenstown</label>
                     </div>
-                    <div class="form-check form-check-inline">
+                    <div class="dropdown-item">
                       <input id= "Southampton" type="checkbox"checked>
                       <label for= "Southampton">Southampton</label>
                     </div>
                   </div>
-
-                  <div class="form-check form-check-inline">
-                    <input id= "unknown" type="checkbox"checked>
-                    <label for= "unknown">Unknown age</label>
-                  </div>
-                  <div id="age" class="row">
-                    <div class="col-sm-6">
-                      <label for= "min">Min age</label>
-                      <input id= "min" class="form-control" type="number" min="1" max="99" value="1">
-                      <div id = "error1" style="color:red" hidden>Age must be greater than zero</div>
-                      <div id = "error2" style="color:red" hidden>Age must be less than 100</div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for= "max">Max age</label>
-                      <input id= "max" class="form-control" type="number" min="1" max="99" value="99">
-                      <div id = "error3" style="color:red" hidden>Age must be greater than zero</div>
-                      <div id = "error4" style="color:red" hidden>Age must be less than 100</div>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Unknown
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
+                      <input id= "unknown" type="checkbox"checked>
+                      <label for= "unknown">Unknown age</label>
                     </div>
                   </div>
-                  <div class="row">
-                    <div id = "error5" class="col-sm-12" style="color:red" hidden>Minimum age must be less than maximum</div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-12 d-flex justify-content-center mt-2">
-                      <button class="btn btn-primary" type="button" onClick="validateAge()">
-                        Filter dataset
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                </div>
               </div>
-          </div>
+              <div id="age" class="row mt-3">
+                <div class="col-sm-6">
+                  <label for= "min">Min age</label>
+                  <input id= "min" class="form-control" type="number" min="1" max="99" value="1">
+                  <div id = "error1" style="color:red" hidden>Age must be greater than zero</div>
+                  <div id = "error2" style="color:red" hidden>Age must be less than 100</div>
+                </div>
+                <div class="col-sm-6">
+                  <label for= "max">Max age</label>
+                  <input id= "max" class="form-control" type="number" min="1" max="99" value="99">
+                  <div id = "error3" style="color:red" hidden>Age must be greater than zero</div>
+                  <div id = "error4" style="color:red" hidden>Age must be less than 100</div>
+                </div>
+              </div>
+              <div class="row">
+                <div id = "error5" class="col-sm-12" style="color:red" hidden>Minimum age must be less than maximum</div>
+              </div>
 
-          <div class="col-lg-6">
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center mt-2">
+                  <button class="btn btn-primary" type="button" onClick="validateAge()">
+                    Filter dataset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7">
             <div id="chart">
             </div>
           </div>

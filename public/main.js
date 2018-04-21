@@ -4,6 +4,19 @@ var setName = 'dead';
 
 function changeSet(name) {
 	setName = name;
+	//update styling
+	var buttons = document.querySelectorAll('#datasets1 button');
+
+	for (let i = 0; i < buttons.length; i++) {
+		if (buttons[i].innerText == name){
+			buttons[i].classList.add('active');
+			buttons[i].setAttribute('aria-pressed','true');
+		}
+		else {
+			buttons[i].classList.remove('active');
+			buttons[i].setAttribute('aria-pressed','false');
+		}
+	}
 	upDateData();
 }
 function validateAge() {
@@ -100,7 +113,7 @@ function getParameters() {
 
 // THIS SECTION CONTAINS HELPER FUNCTIONS FOR COUNTING INSTANCES OF VARIOUS VALUES
 function countDead(inData) {
-	var deadData = [{'label':'Dead', 'value':0},{'label':'Alive', 'value':0}];
+	var deadData = [{'label':'Died', 'value':0},{'label':'Survived', 'value':0}];
 	// counting no of survivors
 	inData.forEach((obj)=> {
 		if (obj.Survived == 0) {
@@ -113,7 +126,7 @@ function countDead(inData) {
 }
 
 function countClass(inData) {
-	var classData = [{'label':'Third class', 'value':0},{'label':'Second class', 'value':0},{'label':'First class', 'value':0}];
+	var classData = [{'label':'3rd class', 'value':0},{'label':'2nd class', 'value':0},{'label':'1st class', 'value':0}];
 
 	// counting passangers by class
 	inData.forEach((obj)=> {
@@ -139,7 +152,7 @@ function countAge(inData) {
 		{'label': '31-50', 'value':0},
 		{'label': '51-70', 'value':0},
 		{'label': '70+', 'value':0},
-		{'label': 'unknown', 'value':0}
+		{'label': 'N/A', 'value':0}
 	];
 
 	inData.forEach((obj)=> {
@@ -190,7 +203,7 @@ function countEmbark(inData) {
 	var embarkData = [{'label': 'Cherbourg', 'value':0},
 		{'label':'Queenstown', 'value':0},
 		{'label':'Southampton', 'value':0},
-		{'label': 'Unknown', 'value': 0}];
+		{'label': 'N/A', 'value': 0}];
 
 	inData.forEach((obj)=> {
 		if (obj.Embarked == 'C') {
