@@ -93,6 +93,7 @@ svg
 		.style('fill', function(d, i){
 			return colors(i);
 		})
+		.style('opacity', 0)
 		.attr('width', xScale.bandwidth())
 		.attr('height', function(d){
 			return yScale(d.value);
@@ -102,7 +103,9 @@ svg
 		})
 		.attr('y', function(d){
 			return height - yScale(d.value);
-		});
+		})
+
+
 	// creates a label for each bar
 	bar.append('text')
 		.attr('class', 'nameLabel')
@@ -135,7 +138,11 @@ svg
 	// Update existing bars
 
 	// Remove empty bars
-	bars.exit().remove();
+	bars.exit().transition()
+	.style("opacity", 0)
+	.duration(animateDuration/2)
+	.ease(d3.easeExp)
+	.remove();
 
 	// create the axis labels
 	var vScale = d3.scaleLinear()
@@ -159,6 +166,7 @@ svg
 	// animations to update values
 	d3.selectAll('rect').data(myData)
 		.transition()
+		.style('opacity', 1)
 		.attr('width', xScale.bandwidth())
 		.attr('height', function(d){
 			return yScale(d.value);
@@ -222,14 +230,14 @@ svg
 
 // SHould just add these into the html?
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary active')
+	.attr('class','btn btn-outline-info active')
 	.attr('data-toggle', 'button')
 	.text('Death')
 	.on('click', function() {
 		changeSet('dead');
 	});
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary')
+	.attr('class','btn btn-outline-info')
 	.attr('data-toggle', 'button')
 	.text('Class')
 	.on('click', function() {
@@ -237,7 +245,7 @@ d3.select('#datasets1').append('button')
 	});
 
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary')
+	.attr('class','btn btn-outline-info')
 	.attr('data-toggle', 'button')
 	.text('Age')
 	.on('click', function() {
@@ -245,7 +253,7 @@ d3.select('#datasets1').append('button')
 	});
 
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary')
+	.attr('class','btn btn-outline-info')
 	.attr('data-toggle', 'button')
 	.text('Gender')
 	.on('click', function() {
@@ -253,7 +261,7 @@ d3.select('#datasets1').append('button')
 	});
 
 d3.select('#datasets1').append('button')
-	.attr('class','btn btn-outline-secondary')
+	.attr('class','btn btn-outline-info')
 	.attr('data-toggle', 'button')
 	.text('Embark')
 	.on('click', function() {
