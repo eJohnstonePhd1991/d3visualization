@@ -20,28 +20,35 @@ function changeSet(name) {
 	upDateData();
 }
 function validateAge() {
-	var min = parseInt(document.querySelector('#min').value);
-	var max = parseInt(document.querySelector('#max').value);
+	var min = document.querySelector('#min').value;
+	var max = document.querySelector('#max').value;
 
-	// Checks if input is valid
-	if (min >=1 && min <= max && max <= 100){
-		console.log('ok!');
-		document.querySelector('#error1').hidden = true;
-		document.querySelector('#error2').hidden = true;
-		document.querySelector('#error3').hidden = true;
-		document.querySelector('#error4').hidden = true;
-		document.querySelector('#error5').hidden = true;
+	if (parseInt(min) > parseInt(max)) {
+		document.querySelector('#min').value = max;
+		document.querySelector('#max').value = min;
 
-		upDateData();
 	}
-	// Handle error messages
-	else {
-		document.querySelector('#error1').hidden = (min <=0 ?false:true);
-		document.querySelector('#error2').hidden = (min >= 100 ?false:true);
-		document.querySelector('#error3').hidden = (max <=0 ?false:true);
-		document.querySelector('#error4').hidden = (max >= 100 ?false:true);
-		document.querySelector('#error5').hidden = (min > max ?false: true);
-	}
+	upDateData();
+
+	// // Checks if input is valid
+	// if (min >=1 && min <= max && max <= 100){
+	// 	console.log('ok!');
+	// 	document.querySelector('#error1').hidden = true;
+	// 	document.querySelector('#error2').hidden = true;
+	// 	document.querySelector('#error3').hidden = true;
+	// 	document.querySelector('#error4').hidden = true;
+	// 	document.querySelector('#error5').hidden = true;
+	//
+	// 	upDateData();
+	// }
+	// // Handle error messages
+	// else {
+	// 	document.querySelector('#error1').hidden = (min <=0 ?false:true);
+	// 	document.querySelector('#error2').hidden = (min >= 100 ?false:true);
+	// 	document.querySelector('#error3').hidden = (max <=0 ?false:true);
+	// 	document.querySelector('#error4').hidden = (max >= 100 ?false:true);
+	// 	document.querySelector('#error5').hidden = (min > max ?false: true);
+	// }
 }
 
 function upDateData() {
@@ -71,7 +78,7 @@ function upDateData() {
 function filterData(rawData) {
 	// check which checkboxes are ticked
 	var filterParams = getParameters();
-	// console.log(filterParams);
+	 console.log(filterParams);
 	//filter raw data
 	var dataFilter = function(d){
 		var test = [
@@ -87,7 +94,8 @@ function filterData(rawData) {
 			((d.Embarked === "S") ?filterParams[9].status:true),
 			((d.Age==="") ?(filterParams[10].status):true),
 			((d.Age!="") ?(d.Age >= filterParams[11].value):true),
-			((d.Age!="") ?(d.Age <= filterParams[12].value):true)];
+			((d.Age!="") ?(d.Age <= filterParams[12].value):true)
+		];
 
 		for (let i = 0; i < test.length ; i++){
 			if (!test[i]) {
@@ -103,11 +111,14 @@ function filterData(rawData) {
 function getParameters() {
 	var filters = document.querySelectorAll('#filters  input');
 	var filterStatus = [];
-	for (let i = 0; i < filters.length - 2; i++){
+	for (let i = 0; i < filters.length; i++){
 		filterStatus[i] = {'label':filters[i].id,'status':filters[i].checked};
 	}
-	filterStatus[filters.length-2] = {'label':'min', 'value':filters[filters.length-2].value};
-	filterStatus[filters.length-1] = {'label':'max', 'value':filters[filters.length-1].value};
+	var minVal = parseInt(document.querySelector('#min').value);
+	var maxVal = parseInt(document.querySelector('#max').value);
+	console.log(minVal, maxVal);
+	 filterStatus[filters.length] = {'label':'min', 'value': minVal};
+	 filterStatus[filters.length+1] = {'label':'max', 'value': maxVal};
 	return filterStatus;
 }
 

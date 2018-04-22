@@ -109,6 +109,7 @@ svg
 	// creates a label for each bar
 	bar.append('text')
 		.attr('class', 'nameLabel')
+		.style('opacity', 0)
 		.attr('x', function(d,i){
 			return xScale(i) + xScale.bandwidth()/2;
 		})
@@ -123,6 +124,7 @@ svg
 	// creates a label showing the value
 	bar.append('text')
 		.attr('class', 'dLabel')
+		.style('opacity', 0)
 		.attr('x', function(d,i){
 			return xScale(i) + xScale.bandwidth()/2;
 		})
@@ -139,10 +141,10 @@ svg
 
 	// Remove empty bars
 	bars.exit().transition()
-	.style("opacity", 0)
-	.duration(animateDuration/2)
-	.ease(d3.easeExp)
-	.remove();
+		.style("opacity", 0)
+		.duration(animateDuration/2)
+		.ease(d3.easeExp)
+		.remove();
 
 	// create the axis labels
 	var vScale = d3.scaleLinear()
@@ -185,6 +187,7 @@ svg
 
 	d3.selectAll('.dLabel').data(myData)
 		.transition()
+		.style("opacity", 1)
 		.attr('x', function(d,i){
 			return xScale(i) + xScale.bandwidth()/2;
 		})
@@ -202,6 +205,7 @@ svg
 
 	d3.selectAll('.nameLabel').data(myData)
 		.transition()
+		.style("opacity", 1)
 		.attr('x', function(d,i){
 			return xScale(i) + xScale.bandwidth()/2;
 		})
