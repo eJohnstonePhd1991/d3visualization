@@ -78,7 +78,6 @@ function upDateData() {
 function filterData(rawData) {
 	// check which checkboxes are ticked
 	var filterParams = getParameters();
-	 console.log(filterParams);
 	//filter raw data
 	var dataFilter = function(d){
 		var test = [
@@ -116,9 +115,9 @@ function getParameters() {
 	}
 	var minVal = parseInt(document.querySelector('#min').value);
 	var maxVal = parseInt(document.querySelector('#max').value);
-	console.log(minVal, maxVal);
-	 filterStatus[filters.length] = {'label':'min', 'value': minVal};
-	 filterStatus[filters.length+1] = {'label':'max', 'value': maxVal};
+
+	filterStatus[filters.length] = {'label':'min', 'value': minVal};
+	filterStatus[filters.length+1] = {'label':'max', 'value': maxVal};
 	return filterStatus;
 }
 
